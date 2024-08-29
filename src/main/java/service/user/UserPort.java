@@ -7,4 +7,6 @@ public interface UserPort {
     void saveUser(User user);
     boolean checkIdUser(String id);
     boolean checkEmailUser(String email);
+    User getUserByEmail(String email);
+    User getUserById(String id);
 }
