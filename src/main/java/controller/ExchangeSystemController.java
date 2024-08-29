@@ -1,13 +1,18 @@
 package controller;
 
+import controller.wallet.DepositController;
 import service.exchange.ExchangeSystemService;
+import service.wallet.WalletService;
 import view.ExchangeSystemView;
 
 public class ExchangeSystemController {
     private final ExchangeSystemView exchangeSystemView;
 
-    public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService) {
+    private final DepositController depositController;
+
+    public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService, WalletService walletService) {
         this.exchangeSystemView = exchangeSystemView;
+        this.depositController = new DepositController(exchangeSystemView, walletService);
     }
 
     public void run(){
@@ -16,6 +21,7 @@ public class ExchangeSystemController {
             int userExchangeChoice = exchangeSystemView.getUserSystemChoice();
             switch (userExchangeChoice){
                 case 1:
+                    depositController.execute();
                     break;
                 case 2:
                     break;
@@ -32,7 +38,7 @@ public class ExchangeSystemController {
                     System.out.println("\u001B[32m\t\t>> Logout <<\u001B[0m");
                     break;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("\u001B[31mInvalid option\u001B[0m");
                     break;
             }
         }
