@@ -82,9 +82,18 @@ public class ExchangeSystemView {
 
     public void viewWalletBalance(Wallet wallet){
         System.out.println("""
-                ---------------------------------------
+                \u001B[36m---------------------------------------
                 \t\tView Wallet Balance
                 ---------------------------------------""");
+        System.out.printf("   Fiat Money: \t\t   $%s\n---------------------------------------\n",
+                new DecimalFormat("#,#00.00").format(wallet.getBalanceCash()));
+        List<Crypto> listCryptos = wallet.getCryptoList();
+        StringBuilder cryptoData = new StringBuilder();
+        for(Crypto crypto : listCryptos){
+            cryptoData.append("   ∙ ").append(crypto.toString());
+        }
+        System.out.println("   Cryptocurrency\t|\t Amount");
+        System.out.println(cryptoData + "\u001B[0m");
     }
 
     public void viewExchangeCrypto(List<Crypto> exchangeListCryptos){

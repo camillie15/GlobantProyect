@@ -2,6 +2,7 @@ package model.wallet;
 
 import model.crypto.Crypto;
 import model.exceptions.InvalidAmountDepositException;
+import service.crypto.CryptoService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,8 +11,11 @@ public class Wallet {
     private BigDecimal balanceCash;
     private List<Crypto> cryptoList;
 
+    private CryptoService cryptoService = new CryptoService();
+
     public Wallet() {
         this.balanceCash = BigDecimal.ZERO;
+        this.cryptoList = cryptoService.getCryptos();
     }
 
     public BigDecimal getBalanceCash() {

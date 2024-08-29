@@ -30,7 +30,7 @@ public class LoginController {
                     ExchangeSystemView exchangeSystemView = new ExchangeSystemView(loginView.getScanner());
                     ExchangeSystemService exchangeSystemService = ExchangeSystemService.getExchangeInstance(userService);
                     WalletService walletService = new WalletService(user);
-                    ExchangeSystemController systemController = new ExchangeSystemController(exchangeSystemView, exchangeSystemService, walletService);
+                    ExchangeSystemController systemController = new ExchangeSystemController(exchangeSystemView, exchangeSystemService, walletService, user);
                     systemController.run();
                 }else{
                     throw new InvalidPasswordException();
