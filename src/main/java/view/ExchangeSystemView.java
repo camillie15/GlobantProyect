@@ -98,10 +98,16 @@ public class ExchangeSystemView {
 
     public void viewExchangeCrypto(List<Crypto> exchangeListCryptos){
         System.out.println("""
-                -----------------------------------------------------
+                \u001B[36m-----------------------------------------------------
                 \t\t\tExchange Cryptos Available
                 -----------------------------------------------------""");
         System.out.println("\tCryptocurrency\t|\t Amount\t  | \t Price");
+        for(Crypto crypto : exchangeListCryptos){
+            String cryptoData = crypto.getAmountCrypto() + " " + crypto.getTypeCrypto().getSymbolCrypto();
+            System.out.printf("   ∙ %s\t\t|\t%-10s| \t%-10s\n\u001B[0m", crypto.getTypeCrypto().getNameCrypto(), cryptoData,
+                    new DecimalFormat("#,#00.00").format(crypto.getPriceCrypto()));
+        }
+        System.out.print("\n");
     }
 
     public void viewTransactionHistory(List<Transaction> transactions){
