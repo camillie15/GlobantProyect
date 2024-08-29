@@ -1,4 +1,4 @@
-import controller.user.RootController;
+import controller.RootController;
 import model.system.ScannerSingleton;
 import service.user.UserService;
 import view.LoginView;

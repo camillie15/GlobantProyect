@@ -45,4 +45,21 @@ public class UserService implements UserPort{
         }
         return counter == 0;
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        User userFind = null;
+        for (User user : users.values()){
+            if(user.getEmail().equals(email)){
+                userFind = new User(user.getName(), user.getEmail(), user.getPassword(), user.getIdUser(), user.getWallet(), user.getTransactions());
+                break;
+            }
+        }
+        return userFind;
+    }
+
+    @Override
+    public User getUserById(String id) {
+        return users.get(id);
+    }
 }

@@ -22,9 +22,9 @@ public class RegisterController {
             User userCreate = userService.createUser(nameUser, email, password);
             userService.saveUser(userCreate);
             if(userService.checkIdUser(userCreate.getIdUser())){
-                System.out.println("Successful register");
+                System.out.println("\u001B[32m\t>> Successful register <<\u001B[0m");
             }else{
-                System.out.println("\u001B[31mUnsuccessful register.\n\u001B[0m" );
+                System.out.println("\u001B[31m>> Unsuccessful register <<\u001B[0m" );
             }
 
         } catch (EmailExistsException e){
