@@ -1,0 +1,44 @@
+package model.crypto;
+
+import java.math.BigDecimal;
+
+public class Crypto {
+    private TypeCrypto typeCrypto;
+    private BigDecimal amountCrypto;
+    private BigDecimal priceCrypto;
+
+    public Crypto(TypeCrypto typeCrypto, BigDecimal amountCrypto, BigDecimal priceCrypto) {
+        this.typeCrypto = typeCrypto;
+        this.amountCrypto = amountCrypto;
+        this.priceCrypto = priceCrypto;
+    }
+
+    public Crypto(TypeCrypto typeCrypto, BigDecimal amountCrypto) {
+        this.typeCrypto = typeCrypto;
+        this.amountCrypto = amountCrypto;
+    }
+
+    public TypeCrypto getTypeCrypto() {
+        return typeCrypto;
+    }
+
+    public BigDecimal getAmountCrypto(){
+        return amountCrypto;
+    }
+
+    public BigDecimal getPriceCrypto() {
+        return priceCrypto;
+    }
+
+    public void buyCrypto(BigDecimal amountTraded){
+        this.amountCrypto = amountCrypto.add(amountTraded);
+    }
+
+    public void sellCrypto(BigDecimal amountTraded){
+        this.amountCrypto = amountCrypto.subtract(amountTraded);
+    }
+
+    public String toString(){
+        return String.format("%s\t\t|\t  %s %-10s\n", typeCrypto.getNameCrypto(), amountCrypto, typeCrypto.getSymbolCrypto());
+    }
+}
