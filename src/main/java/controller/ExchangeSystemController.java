@@ -38,7 +38,7 @@ public class ExchangeSystemController {
                     System.out.println("\u001B[32m\t\t>> Logout <<\u001B[0m");
                     break;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("\u001B[31mInvalid option\u001B[0m");
                     break;
             }
         }

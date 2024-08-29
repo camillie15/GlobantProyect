@@ -6,6 +6,7 @@ import model.exceptions.UnknownEmailException;
 import model.user.User;
 import service.exchange.ExchangeSystemService;
 import service.user.UserService;
+import service.wallet.WalletService;
 import view.ExchangeSystemView;
 import view.LoginView;
 
@@ -28,7 +29,8 @@ public class LoginController {
                     System.out.println("\u001B[32m\t>> Successful login <<\u001B[0m");
                     ExchangeSystemView exchangeSystemView = new ExchangeSystemView(loginView.getScanner());
                     ExchangeSystemService exchangeSystemService = ExchangeSystemService.getExchangeInstance(userService);
-                    ExchangeSystemController systemController = new ExchangeSystemController(exchangeSystemView, exchangeSystemService);
+                    WalletService walletService = new WalletService(user);
+                    ExchangeSystemController systemController = new ExchangeSystemController(exchangeSystemView, exchangeSystemService, walletService);
                     systemController.run();
                 }else{
                     throw new InvalidPasswordException();
