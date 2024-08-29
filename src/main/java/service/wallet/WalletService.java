@@ -22,4 +22,16 @@ public class WalletService implements WalletPort{
     public Wallet getWallet() {
         return wallet;
     }
+
+    @Override
+    public void buyCrypto(Order order) {
+        for(Crypto crypto : getWallet().getCryptoList()) {
+            if (crypto.getTypeCrypto().getNameCrypto().equalsIgnoreCase(order.getTypeCrypto().getNameCrypto())) {
+                crypto.buyCrypto(order.getAmountTraded());
+                wallet.buyCrypto(order.getPrice());
+                order.orderProcessed();
+                break;
+            }
+        }
+    }
 }
