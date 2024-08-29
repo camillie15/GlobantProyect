@@ -1,6 +1,8 @@
 package controller;
 
+import controller.wallet.CheckWalletController;
 import controller.wallet.DepositController;
+import model.user.User;
 import service.exchange.ExchangeSystemService;
 import service.wallet.WalletService;
 import view.ExchangeSystemView;
@@ -9,10 +11,12 @@ public class ExchangeSystemController {
     private final ExchangeSystemView exchangeSystemView;
 
     private final DepositController depositController;
+    private final CheckWalletController checkWalletController;
 
-    public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService, WalletService walletService) {
+    public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService, WalletService walletService, User user) {
         this.exchangeSystemView = exchangeSystemView;
         this.depositController = new DepositController(exchangeSystemView, walletService);
+        this.checkWalletController = new CheckWalletController(exchangeSystemView, user);
     }
 
     public void run(){
@@ -24,6 +28,7 @@ public class ExchangeSystemController {
                     depositController.execute();
                     break;
                 case 2:
+                    checkWalletController.execute();
                     break;
                 case 3:
                     break;
