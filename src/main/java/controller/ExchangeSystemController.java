@@ -1,11 +1,12 @@
 package controller;
 
+import service.exchange.ExchangeSystemService;
 import view.ExchangeSystemView;
 
 public class ExchangeSystemController {
     private final ExchangeSystemView exchangeSystemView;
 
-    public ExchangeSystemController(ExchangeSystemView exchangeSystemView) {
+    public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService) {
         this.exchangeSystemView = exchangeSystemView;
     }
 
