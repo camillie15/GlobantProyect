@@ -10,7 +10,8 @@ public class ExchangeSystemController {
     }
 
     public void run(){
-        while (true){
+        boolean login = true;
+        while (login){
             int userExchangeChoice = exchangeSystemView.getUserSystemChoice();
             switch (userExchangeChoice){
                 case 1:
@@ -26,6 +27,8 @@ public class ExchangeSystemController {
                 case 6:
                     break;
                 case 7:
+                    login = false;
+                    System.out.println("\u001B[32m\t\t>> Logout <<\u001B[0m");
                     break;
                 default:
                     System.out.println("Invalid option");
