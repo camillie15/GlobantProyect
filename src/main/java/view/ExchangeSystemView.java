@@ -104,10 +104,10 @@ public class ExchangeSystemView {
         System.out.println("\tCryptocurrency\t|\t Amount\t  | \t Price");
         for(Crypto crypto : exchangeListCryptos){
             String cryptoData = crypto.getAmountCrypto() + " " + crypto.getTypeCrypto().getSymbolCrypto();
-            System.out.printf("   ∙ %s\t\t|\t%-10s| \t%-10s\n\u001B[0m", crypto.getTypeCrypto().getNameCrypto(), cryptoData,
+            System.out.printf("   ∙ %s\t\t|\t%-10s| \t%-10s\n", crypto.getTypeCrypto().getNameCrypto(), cryptoData,
                     new DecimalFormat("#,#00.00").format(crypto.getPriceCrypto()));
         }
-        System.out.print("\n");
+        System.out.print("\u001B[0m\n");
     }
 
     public void viewTransactionHistory(List<Transaction> transactions){
