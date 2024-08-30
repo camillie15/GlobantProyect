@@ -26,6 +26,9 @@ public class RootController {
                 case 2:
                     loginController.execute();
                     break;
+                case 0:
+                    System.out.println("\u001B[34mClosing Crypto Exchange Sistem...\u001B[0m");
+                    System.exit(0);
                 default:
                     System.out.println("\u001B[31mInvalid option\u001B[0m");
                     break;

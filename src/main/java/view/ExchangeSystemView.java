@@ -38,7 +38,7 @@ public class ExchangeSystemView {
 
     public BigDecimal getAmountDepositInput(){
         try{
-            System.out.print("Type fiat money to deposit: ");
+            System.out.print("Type fiat money to deposit (Use ',' for decimals): ");
             return scanner.nextBigDecimal();
         } catch (InputMismatchException e){
             System.out.println("\u001B[31mInvalid format\u001B[0m");

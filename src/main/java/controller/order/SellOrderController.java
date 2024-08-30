@@ -29,8 +29,8 @@ public class SellOrderController {
     }
     public void execute(){
         String typeCrypto = exchangeSystemView.getTypeCryptoInput("Type the cryptocurrency you want to sell: ").toUpperCase();
-        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to sell: ");
-        BigDecimal priceOffered = exchangeSystemView.getPriceCryptoInput("Type the minimum $$ to accept: ");
+        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to sell (Use ',' for decimals): ");
+        BigDecimal priceOffered = exchangeSystemView.getPriceCryptoInput("Type the minimum $$ to accept (Use ',' for decimals): ");
         try{
             if(walletService.getWallet().getCrypto(TypeCrypto.valueOf(typeCrypto).getNameCrypto()).getAmountCrypto().compareTo(amountCrypto) >= 0){
                 SellOrder sellOrder = sellOrdersService.createSellOrder(user.getIdUser(), TypeCrypto.valueOf(typeCrypto), amountCrypto, priceOffered);

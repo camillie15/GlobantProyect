@@ -29,8 +29,8 @@ public class BuyOrderController {
 
     public void execute(){
         String typeCrypto = exchangeSystemView.getTypeCryptoInput("Type the cryptocurrency you want to buy: ").toUpperCase();
-        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy: ");
-        BigDecimal priceOffered = exchangeSystemView.getPriceCryptoInput("Type the maximum $$ to pay: ");
+        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy (Use ',' for decimals): ");
+        BigDecimal priceOffered = exchangeSystemView.getPriceCryptoInput("Type the maximum $$ to pay (Use ',' for decimals): ");
         try{
             if(walletService.getWallet().getBalanceCash().compareTo(priceOffered) >= 0){
                 BuyOrder buyOrder = buyOrdersService.createBuyOrder(user.getIdUser(), TypeCrypto.valueOf(typeCrypto), amountCrypto, priceOffered);

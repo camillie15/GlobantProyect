@@ -26,7 +26,7 @@ public class BuyToExchangeController {
     public void execute(){
         exchangeSystemView.viewExchangeCrypto(exchangeSystemService.getCryptosExchange());
         String typeCrypto = exchangeSystemView.getTypeCryptoInput("Type the cryptocurrency you want to buy: ").toUpperCase();
-        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy: ");
+        BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy (Use ',' for decimals): ");
         try{
             exchangeSystemService.buyToExchange(TypeCrypto.valueOf(typeCrypto), amountCrypto, user.getIdUser(), walletService);
             System.out.println("\u001B[32m\t>> Successful buy <<\u001B[0m");

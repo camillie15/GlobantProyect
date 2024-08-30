@@ -20,6 +20,7 @@ public class LoginView {
         System.out.println("Welcome to the Crypto Exchange System");
         System.out.println("1. Register");
         System.out.println("2. Login");
+        System.out.println("0. Exit");
         System.out.print("Choose one option to start: ");
         try{
             return scanner.nextInt();
