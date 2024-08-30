@@ -1,6 +1,7 @@
 package service.order;
 
 import model.crypto.TypeCrypto;
+import model.order.BuyOrder;
 import model.order.SellOrder;
 
 import java.math.BigDecimal;
@@ -20,6 +21,21 @@ public class SellOrdersService implements SellOrderPort{
             sellOrdersInstance = new SellOrdersService();
         }
         return sellOrdersInstance;
+    }
+    public int getTotalOrders(){
+        return sellOrders.size();
+    }
+    @Override
+    public SellOrder createSellOrder(String idUser, TypeCrypto typeCrypto, BigDecimal amountTraded, BigDecimal price) {
+        SellOrder sellOrder = null;
+        String idOrder = "S" + (getTotalOrders() + 1);
+        sellOrder = new SellOrder(idOrder, idUser, typeCrypto, amountTraded, price);
+        return sellOrder;
+    }
+
+    @Override
+    public void addToSellOrderBook(SellOrder sellOrder) {
+        sellOrders.put(sellOrder.getIdOrder(), sellOrder);
     }
 
     @Override
