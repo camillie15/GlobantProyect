@@ -48,7 +48,15 @@ public class ExchangeSystemService implements ExchangeSystemPort{
 
     public List<SellOrder> getSellOrders() {
         if(!sellOrdersService.getSellOrders().isEmpty()){
-            return  sellOrdersService.getSellOrders();
+            return sellOrdersService.getSellOrders();
+        }else {
+            throw new EmptyListException();
+        }
+    }
+
+    public List<BuyOrder> getBuyOrders() {
+        if(!buyOrdersService.getBuyOrders().isEmpty()){
+            return buyOrdersService.getBuyOrders();
         }else {
             throw new EmptyListException();
         }
@@ -98,6 +106,30 @@ public class ExchangeSystemService implements ExchangeSystemPort{
             }
         }
         if(!buyOrder.isProcessedOrder()){
+            System.out.println("\u001B[34mNo sell orders to match, your order will be process later\u001B[0m");
+        }
+    }
+
+    public void processSellOrder(SellOrder sellOrder){
+        for(BuyOrder buyOrder : getBuyOrders()){
+            if (!buyOrder.isProcessedOrder() && !buyOrder.getIdUser().equals(sellOrder.getIdUser())){
+                if(buyOrder.getAmountTraded().compareTo(sellOrder.getAmountTraded()) == 0 && buyOrder.getPrice().compareTo(sellOrder.getPrice()) >= 0){
+
+                    WalletService userSellWallet = new WalletService(userService.getUserById(sellOrder.getIdUser()));
+                    userSellWallet.sellCrypto(buyOrder);
+                    sellOrder.orderProcessed();
+
+                    WalletService userBuyWallet = new WalletService(userService.getUserById(buyOrder.getIdUser()));
+                    userBuyWallet.buyCrypto(buyOrder);
+                    buyOrder.orderProcessed();
+
+                    System.out.println("\u001B[32m\t>> Sell Order successfully processed <<\nCrypto and fiat money in your wallet has been updated\u001B[0m");
+
+                    break;
+                }
+            }
+        }
+        if(!sellOrder.isProcessedOrder()){
             System.out.println("\u001B[34mNo sell orders to match, your order will be process later\u001B[0m");
         }
     }
