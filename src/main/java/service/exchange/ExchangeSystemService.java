@@ -10,6 +10,7 @@ import model.order.SellOrder;
 import model.system.ExchangeSystem;
 import service.order.BuyOrdersService;
 import service.order.SellOrdersService;
+import service.transaction.TransactionService;
 import service.user.UserService;
 import service.wallet.WalletService;
 
@@ -70,6 +71,8 @@ public class ExchangeSystemService implements ExchangeSystemPort{
             if (walletService.getWallet().getBalanceCash().compareTo(totalPay) >= 0) {
                 BuyOrder buyOrder = buyOrdersService.createBuyOrder(idUser, crypto.getTypeCrypto(), amountTraded, totalPay);
                 walletService.buyCrypto(buyOrder);
+                TransactionService transactionService = new TransactionService(userService.getUserById(buyOrder.getIdUser()));
+                transactionService.createTransaction(buyOrder, "Buy");
 
                 crypto.sellCrypto(amountTraded);
             } else {
@@ -94,10 +97,14 @@ public class ExchangeSystemService implements ExchangeSystemPort{
                     WalletService userBuyWallet = new WalletService(userService.getUserById(buyOrder.getIdUser()));
                     userBuyWallet.buyCrypto(sellOrder);
                     buyOrder.orderProcessed();
+                    TransactionService transactionServiceBuy = new TransactionService(userService.getUserById(buyOrder.getIdUser()));
+                    transactionServiceBuy.createTransaction(sellOrder, "Buy");
 
                     WalletService userSellWallet = new WalletService(userService.getUserById(sellOrder.getIdUser()));
                     userSellWallet.sellCrypto(sellOrder);
                     sellOrder.orderProcessed();
+                    TransactionService transactionServiceSell = new TransactionService(userService.getUserById(sellOrder.getIdUser()));
+                    transactionServiceSell.createTransaction(sellOrder, "Sell");
 
                     System.out.println("\u001B[32m\t>> Buy Order successfully processed <<\nCrypto and fiat money in your wallet has been updated\u001B[0m");
 
@@ -118,10 +125,14 @@ public class ExchangeSystemService implements ExchangeSystemPort{
                     WalletService userSellWallet = new WalletService(userService.getUserById(sellOrder.getIdUser()));
                     userSellWallet.sellCrypto(buyOrder);
                     sellOrder.orderProcessed();
+                    TransactionService transactionServiceSell = new TransactionService(userService.getUserById(sellOrder.getIdUser()));
+                    transactionServiceSell.createTransaction(buyOrder, "Sell");
 
                     WalletService userBuyWallet = new WalletService(userService.getUserById(buyOrder.getIdUser()));
                     userBuyWallet.buyCrypto(buyOrder);
                     buyOrder.orderProcessed();
+                    TransactionService transactionServiceBuy = new TransactionService(userService.getUserById(buyOrder.getIdUser()));
+                    transactionServiceBuy.createTransaction(buyOrder, "Buy");
 
                     System.out.println("\u001B[32m\t>> Sell Order successfully processed <<\nCrypto and fiat money in your wallet has been updated\u001B[0m");
 
@@ -130,7 +141,7 @@ public class ExchangeSystemService implements ExchangeSystemPort{
             }
         }
         if(!sellOrder.isProcessedOrder()){
-            System.out.println("\u001B[34mNo sell orders to match, your order will be process later\u001B[0m");
+            System.out.println("\u001B[34mNo buy orders to match, your order will be process later\u001B[0m");
         }
     }
 }
