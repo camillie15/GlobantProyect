@@ -3,17 +3,20 @@ package model.crypto;
 import java.math.BigDecimal;
 
 public class Crypto {
+    private String idCrypto;
     private TypeCrypto typeCrypto;
     private BigDecimal amountCrypto;
     private BigDecimal priceCrypto;
 
     public Crypto(TypeCrypto typeCrypto, BigDecimal amountCrypto, BigDecimal priceCrypto) {
+        this.idCrypto = typeCrypto.getIdCrypto();
         this.typeCrypto = typeCrypto;
         this.amountCrypto = amountCrypto;
         this.priceCrypto = priceCrypto;
     }
 
     public Crypto(TypeCrypto typeCrypto, BigDecimal amountCrypto) {
+        this.idCrypto = typeCrypto.getIdCrypto();
         this.typeCrypto = typeCrypto;
         this.amountCrypto = amountCrypto;
     }

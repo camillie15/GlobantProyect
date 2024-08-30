@@ -1,15 +1,21 @@
 package model.crypto;
 
 public enum TypeCrypto {
-    BITCOIN("Bitcoin", "BTC"),
-    ETHEREUM("Ethereum", "ETH");
+    BITCOIN("001","Bitcoin", "BTC"),
+    ETHEREUM("002", "Ethereum", "ETH");
 
     private final String nameCrypto;
     private final String symbolCrypto;
+    private final String idCrypto;
 
-    TypeCrypto(String nameCrypto, String symbolCrypto) {
+    TypeCrypto(String idCrypto, String nameCrypto, String symbolCrypto) {
         this.nameCrypto = nameCrypto;
         this.symbolCrypto = symbolCrypto;
+        this.idCrypto = idCrypto;
+    }
+
+    public String getIdCrypto() {
+        return idCrypto;
     }
 
     public String getNameCrypto() {
