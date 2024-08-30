@@ -20,7 +20,7 @@ public class DepositController {
         BigDecimal amount = exchangeSystemView.getAmountDepositInput();
         try{
             walletService.depositCash(amount);
-            System.out.printf("\u001B[32m\t>> Successful deposit <<\n  Actual fiat in ypur wallet: %s\n\u001B[0m",
+            System.out.printf("\u001B[32m\t>> Successful deposit <<\nActual fiat in your wallet: %s\n\u001B[0m",
                     new DecimalFormat("#,#00.00").format(walletService.getWallet().getBalanceCash()));
         } catch (InvalidAmountDepositException e){
             System.out.println("\u001B[31m" + "Invalid amount. Amount must be greater than 0" + "\u001B[0m");

@@ -2,11 +2,14 @@ package service.exchange;
 
 import model.crypto.Crypto;
 import model.crypto.TypeCrypto;
+import model.exceptions.EmptyListException;
 import model.exceptions.InsufficientCryptoException;
 import model.exceptions.InsufficientFiatMoney;
 import model.order.BuyOrder;
+import model.order.SellOrder;
 import model.system.ExchangeSystem;
 import service.order.BuyOrdersService;
+import service.order.SellOrdersService;
 import service.user.UserService;
 import service.wallet.WalletService;
 
@@ -21,6 +24,7 @@ public class ExchangeSystemService implements ExchangeSystemPort{
     private final UserService userService;
 
     private final BuyOrdersService buyOrdersService;
+    private final SellOrdersService sellOrdersService;
 
     private static ExchangeSystemService exchangeInstance;
 
@@ -30,8 +34,9 @@ public class ExchangeSystemService implements ExchangeSystemPort{
         cryptosExchange.put("Ethereum", new Crypto(TypeCrypto.ETHEREUM, new BigDecimal("500"), new BigDecimal("3000.00")));
 
         this.buyOrdersService = BuyOrdersService.getBuyOrdersInstance();
+        this.sellOrdersService = SellOrdersService.getSellOrdersInstance();
 
-        ExchangeSystem exchange = new ExchangeSystem(getCryptosExchange(), new ArrayList<>(), new ArrayList<>());
+        ExchangeSystem exchange = new ExchangeSystem(getCryptosExchange(), buyOrdersService.getBuyOrders(), sellOrdersService.getSellOrders());
     }
 
     public static ExchangeSystemService getExchangeInstance(UserService userService){
@@ -39,6 +44,14 @@ public class ExchangeSystemService implements ExchangeSystemPort{
             exchangeInstance = new ExchangeSystemService(userService);
         }
         return exchangeInstance;
+    }
+
+    public List<SellOrder> getSellOrders() {
+        if(!sellOrdersService.getSellOrders().isEmpty()){
+            return  sellOrdersService.getSellOrders();
+        }else {
+            throw new EmptyListException();
+        }
     }
 
     @Override
@@ -62,5 +75,30 @@ public class ExchangeSystemService implements ExchangeSystemPort{
     @Override
     public List<Crypto> getCryptosExchange() {
         return new ArrayList<>(cryptosExchange.values());
+    }
+
+    @Override
+    public void processBuyOrder(BuyOrder buyOrder) {
+        for(SellOrder sellOrder : getSellOrders()){
+            if(!sellOrder.isProcessedOrder() && !sellOrder.getIdUser().equals(buyOrder.getIdUser())){
+                if(sellOrder.getAmountTraded().compareTo(buyOrder.getAmountTraded()) == 0 && sellOrder.getPrice().compareTo(buyOrder.getPrice()) <= 0){
+
+                    WalletService userBuyWallet = new WalletService(userService.getUserById(buyOrder.getIdUser()));
+                    userBuyWallet.buyCrypto(sellOrder);
+                    buyOrder.orderProcessed();
+
+                    WalletService userSellWallet = new WalletService(userService.getUserById(sellOrder.getIdUser()));
+                    userSellWallet.sellCrypto(sellOrder);
+                    sellOrder.orderProcessed();
+
+                    System.out.println("\u001B[32m\t>> Buy Order successfully processed <<\nCrypto and fiat money in your wallet has been updated\u001B[0m");
+
+                    break;
+                }
+            }
+        }
+        if(!buyOrder.isProcessedOrder()){
+            System.out.println("\u001B[34mNo sell orders to match, your order will be process later\u001B[0m");
+        }
     }
 }
