@@ -3,6 +3,7 @@ package controller;
 import controller.exchange.BuyToExchangeController;
 import controller.order.BuyOrderController;
 import controller.order.SellOrderController;
+import controller.transaction.TransactionController;
 import controller.wallet.CheckWalletController;
 import controller.wallet.DepositController;
 import model.user.User;
@@ -18,6 +19,7 @@ public class ExchangeSystemController {
     private final BuyToExchangeController buyToExchangeController;
     private final BuyOrderController buyOrderController;
     private final SellOrderController sellOrderController;
+    private final TransactionController transactionController;
 
     public ExchangeSystemController(ExchangeSystemView exchangeSystemView, ExchangeSystemService exchangeSystemService, WalletService walletService, User user) {
         this.exchangeSystemView = exchangeSystemView;
@@ -26,6 +28,7 @@ public class ExchangeSystemController {
         this.buyToExchangeController = new BuyToExchangeController(exchangeSystemView, exchangeSystemService, user, walletService);
         this.buyOrderController = new BuyOrderController(exchangeSystemView, user, exchangeSystemService, walletService);
         this.sellOrderController = new SellOrderController(exchangeSystemView, user, exchangeSystemService, walletService);
+        this.transactionController = new TransactionController(exchangeSystemView, user);
     }
 
     public void run(){
@@ -49,6 +52,7 @@ public class ExchangeSystemController {
                     sellOrderController.execute();
                     break;
                 case 6:
+                    transactionController.execute();
                     break;
                 case 7:
                     login = false;

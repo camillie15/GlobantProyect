@@ -112,9 +112,14 @@ public class ExchangeSystemView {
 
     public void viewTransactionHistory(List<Transaction> transactions){
         System.out.println("""
-                -----------------------------------------------------------------------
+                \u001B[36m-----------------------------------------------------------------------
                 \t\t\t\t\t\tTransaction History
                 -----------------------------------------------------------------------""");
         System.out.println("   Cryptocurrency\t|\t Amount \t|\t   Price \t\t|\t Action");
+        StringBuilder cryptoExchangeData = new StringBuilder();
+        for(Transaction transaction : transactions){
+            cryptoExchangeData.append("   ∙ ").append(transaction.toString());
+        }
+        System.out.println(cryptoExchangeData + "\u001B[0m");
     }
 }
