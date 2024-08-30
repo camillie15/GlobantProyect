@@ -15,10 +15,10 @@ import service.user.UserService;
 import service.wallet.WalletService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ExchangeSystemService implements ExchangeSystemPort{
     private final Map<String, Crypto> cryptosExchange = new HashMap<>();
@@ -26,6 +26,8 @@ public class ExchangeSystemService implements ExchangeSystemPort{
 
     private final BuyOrdersService buyOrdersService;
     private final SellOrdersService sellOrdersService;
+
+    ScheduledExecutorService priceFluctuate;
 
     private static ExchangeSystemService exchangeInstance;
 
@@ -38,6 +40,9 @@ public class ExchangeSystemService implements ExchangeSystemPort{
         this.sellOrdersService = SellOrdersService.getSellOrdersInstance();
 
         ExchangeSystem exchange = new ExchangeSystem(getCryptosExchange(), buyOrdersService.getBuyOrders(), sellOrdersService.getSellOrders());
+
+        priceFluctuate = Executors.newScheduledThreadPool(1);
+        priceFluctuate.scheduleAtFixedRate(fluctuateMarket, 0,10000, TimeUnit.MILLISECONDS);
     }
 
     public static ExchangeSystemService getExchangeInstance(UserService userService){
@@ -117,7 +122,8 @@ public class ExchangeSystemService implements ExchangeSystemPort{
         }
     }
 
-    public void processSellOrder(SellOrder sellOrder){
+    @Override
+    public void processSellOrder(SellOrder sellOrder) {
         for(BuyOrder buyOrder : getBuyOrders()){
             if (!buyOrder.isProcessedOrder() && !buyOrder.getIdUser().equals(sellOrder.getIdUser())){
                 if(buyOrder.getAmountTraded().compareTo(sellOrder.getAmountTraded()) == 0 && buyOrder.getPrice().compareTo(sellOrder.getPrice()) >= 0){
@@ -142,6 +148,28 @@ public class ExchangeSystemService implements ExchangeSystemPort{
         }
         if(!sellOrder.isProcessedOrder()){
             System.out.println("\u001B[34mNo buy orders to match, your order will be process later\u001B[0m");
+        }
+    }
+
+    Runnable fluctuateMarket =() -> {
+        fluctuatePrice(cryptosExchange.get("Bitcoin"), generateRandom(new BigDecimal("0.00"), new BigDecimal("1.00")));
+        fluctuatePrice(cryptosExchange.get("Ethereum"), generateRandom(new BigDecimal("0.00"), new BigDecimal("1.00")));
+    };
+
+    public static BigDecimal generateRandom(BigDecimal min, BigDecimal max) {
+        return min.add(BigDecimal.valueOf(Math.random()).multiply(max.subtract(min)));
+    }
+
+    public void fluctuatePrice(Crypto crypto, BigDecimal variation){
+        List<String> listAc = new ArrayList<>();
+        listAc.add("add");
+        listAc.add("subtract");
+
+        String action = listAc.get(new Random().nextInt(listAc.size()));
+        if (action.equals("add")){
+            crypto.addPrice(variation);
+        }else if (action.equals("subtract")){
+            crypto.subtractPrice(variation);
         }
     }
 }

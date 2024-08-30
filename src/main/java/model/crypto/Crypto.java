@@ -41,6 +41,14 @@ public class Crypto {
         this.amountCrypto = amountCrypto.subtract(amountTraded);
     }
 
+    public void addPrice(BigDecimal variation){
+        this.priceCrypto = priceCrypto.add(variation);
+    }
+
+    public void subtractPrice(BigDecimal variation){
+        this.priceCrypto = priceCrypto.subtract(variation);
+    }
+
     public String toString(){
         return String.format("%s\t\t|\t  %s %-10s\n", typeCrypto.getNameCrypto(), amountCrypto, typeCrypto.getSymbolCrypto());
     }
