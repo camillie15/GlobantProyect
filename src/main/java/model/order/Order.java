@@ -4,7 +4,7 @@ import model.crypto.TypeCrypto;
 
 import java.math.BigDecimal;
 
-public class Order {
+public abstract class Order {
     protected String idOrder;
     protected String idUser;
     protected TypeCrypto typeCrypto;

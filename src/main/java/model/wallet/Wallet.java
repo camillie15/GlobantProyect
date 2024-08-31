@@ -45,12 +45,12 @@ public class Wallet {
         }
     }
 
-    public void buyCrypto(BigDecimal priceOffered) {
-        this.balanceCash = balanceCash.subtract(priceOffered);
+    public void buyCrypto(BigDecimal price) {
+        this.balanceCash = balanceCash.subtract(price);
     }
 
-    public void sellCrypto(BigDecimal priceOffered) {
-        this.balanceCash = balanceCash.add(priceOffered);
+    public void sellCrypto(BigDecimal price) {
+        this.balanceCash = balanceCash.add(price);
     }
 
 }

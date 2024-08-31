@@ -32,7 +32,8 @@ public class BuyOrderController {
         BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy (Use ',' for decimals): ");
         BigDecimal priceOffered = exchangeSystemView.getPriceCryptoInput("Type the maximum $$ to pay (Use ',' for decimals): ");
         try{
-            if(walletService.getWallet().getBalanceCash().compareTo(priceOffered) >= 0){
+            BigDecimal buyOrdersFiat = exchangeSystemService.getFiatInBuyOrders(user.getIdUser());
+            if(walletService.getWallet().getBalanceCash().compareTo(buyOrdersFiat.add(priceOffered)) >= 0){
                 BuyOrder buyOrder = buyOrdersService.createBuyOrder(user.getIdUser(), TypeCrypto.valueOf(typeCrypto), amountCrypto, priceOffered);
                 buyOrdersService.addToBuyOrderBook(buyOrder);
                 exchangeSystemService.processBuyOrder(buyOrder);
@@ -40,7 +41,7 @@ public class BuyOrderController {
                 throw new InsufficientFiatMoney();
             }
         }catch (InsufficientFiatMoney e){
-            System.out.println("\u001B[31mInsufficient fiat money in your wallet\u001B[0m");
+            System.out.println("\u001B[31mInsufficient fiat money in your wallet, you place others buy orders\u001B[0m");
         }catch (EmptyListException e){
             System.out.println("\u001B[34mNo sell orders registered, your order will be process later\u001B[0m");
         }

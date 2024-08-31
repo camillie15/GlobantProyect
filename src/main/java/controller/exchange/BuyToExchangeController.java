@@ -32,7 +32,7 @@ public class BuyToExchangeController {
             System.out.println("\u001B[32m\t>> Successful buy <<\u001B[0m");
 
         } catch (InsufficientFiatMoney e){
-            System.out.println("\u001B[31mInsufficient fiat money in your wallet\u001B[0m");
+            System.out.println("\u001B[31mInsufficient fiat money in your wallet, you place buy orders\u001B[0m");
         } catch (InsufficientCryptoException e){
             System.out.println("\u001B[31mInsufficient cryptos in the Crypto Exchange System\u001B[0m");
         }

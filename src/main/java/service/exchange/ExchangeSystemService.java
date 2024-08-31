@@ -39,7 +39,7 @@ public class ExchangeSystemService implements ExchangeSystemPort{
         this.buyOrdersService = BuyOrdersService.getBuyOrdersInstance();
         this.sellOrdersService = SellOrdersService.getSellOrdersInstance();
 
-        ExchangeSystem exchange = new ExchangeSystem(getCryptosExchange(), buyOrdersService.getBuyOrders(), sellOrdersService.getSellOrders());
+        ExchangeSystem exchangeSystem = new ExchangeSystem(getCryptosExchange(), buyOrdersService.getBuyOrders(), sellOrdersService.getSellOrders());
 
         priceFluctuate = Executors.newScheduledThreadPool(1);
         priceFluctuate.scheduleAtFixedRate(fluctuateMarket, 0,10000, TimeUnit.MILLISECONDS);
@@ -71,9 +71,10 @@ public class ExchangeSystemService implements ExchangeSystemPort{
     @Override
     public void buyToExchange(TypeCrypto typeCrypto, BigDecimal amountTraded, String idUser, WalletService walletService) {
         Crypto crypto = cryptosExchange.get(typeCrypto.getNameCrypto());
+        BigDecimal buyOrdersFiat = getFiatInBuyOrders(idUser);
         BigDecimal totalPay = crypto.getPriceCrypto().multiply(amountTraded);
         if (crypto.getAmountCrypto().compareTo(amountTraded) >= 0){
-            if (walletService.getWallet().getBalanceCash().compareTo(totalPay) >= 0) {
+            if (walletService.getWallet().getBalanceCash().compareTo(buyOrdersFiat.add(totalPay)) >= 0) {
                 BuyOrder buyOrder = buyOrdersService.createBuyOrder(idUser, crypto.getTypeCrypto(), amountTraded, totalPay);
                 walletService.buyCrypto(buyOrder);
                 TransactionService transactionService = new TransactionService(userService.getUserById(buyOrder.getIdUser()));
@@ -91,6 +92,30 @@ public class ExchangeSystemService implements ExchangeSystemPort{
     @Override
     public List<Crypto> getCryptosExchange() {
         return new ArrayList<>(cryptosExchange.values());
+    }
+
+    public BigDecimal getCryptosInSellOrders(String idUser, TypeCrypto crypto){
+        BigDecimal cryptosOrder = new BigDecimal("0");
+        for (SellOrder sellOrder : sellOrdersService.getSellOrders()){
+            if(sellOrder.getIdUser().equals(idUser) && sellOrder.getTypeCrypto().equals(crypto)){
+                if(!sellOrder.isProcessedOrder()){
+                    cryptosOrder = cryptosOrder.add(sellOrder.getAmountTraded());
+                }
+            }
+        }
+        return cryptosOrder;
+    }
+
+    public BigDecimal getFiatInBuyOrders(String idUser){
+        BigDecimal cryptosOrder = new BigDecimal("0");
+        for(BuyOrder buyOrder : buyOrdersService.getBuyOrders()){
+            if(buyOrder.getIdUser().equals(idUser)){
+                if(!buyOrder.isProcessedOrder()){
+                    cryptosOrder = cryptosOrder.add(buyOrder.getPrice());
+                }
+            }
+        }
+        return cryptosOrder;
     }
 
     @Override
