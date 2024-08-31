@@ -7,7 +7,7 @@ import model.user.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransactionService {
+public class TransactionService implements TransactionPort{
     private Map<String, Transaction> transactions = new HashMap<>();
     private User user;
 
@@ -15,21 +15,22 @@ public class TransactionService {
         this.user = user;
     }
 
-    public void createTransaction(Order order, String action){
+    public int getTotalTransactions(){
+        return transactions.size();
+    }
+
+    @Override
+    public void createTransaction(Order order, String action) {
         Transaction transaction = new Transaction(order.getTypeCrypto(), order.getAmountTraded(), order.getPrice(), action);
         if(transaction != null){
-            addTransaction(transaction);
+            saveTransaction(transaction);
         }
     }
 
-    public void addTransaction(Transaction transaction){
+    @Override
+    public void saveTransaction(Transaction transaction) {
         String idTransaction = "B" + (getTotalTransactions() + 1);
         transactions.put(idTransaction, transaction);
         user.getTransactions().add(transaction);
     }
-
-    public int getTotalTransactions (){
-        return transactions.size();
-    }
-
 }
