@@ -4,4 +4,4 @@ The model contains each of the objects related to the system such as Crypto, Use
 
 Diagram Class:
 
-![Exchange System Class Diagram](https://github.com/user-attachments/assets/9bd64ad3-4b8f-4180-bd27-ba69a9b4a3b7)
+![Exchange System Class Diagram (1)](https://github.com/user-attachments/assets/b99ee23b-4e06-468e-8e5f-2270e7f514c4)
