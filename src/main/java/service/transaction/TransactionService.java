@@ -4,33 +4,30 @@ import model.order.Order;
 import model.transaction.Transaction;
 import model.user.User;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TransactionService implements TransactionPort{
-    private Map<String, Transaction> transactions = new HashMap<>();
-    private User user;
+    private final User user;
 
     public TransactionService(User user) {
         this.user = user;
     }
 
-    public int getTotalTransactions(){
-        return transactions.size();
-    }
-
+    /**
+     * This method creates a transaction based on an order already created with his action.
+     * @param order order that once processed generates a transaction.
+     * @param action action of the order can be buy or sell
+     */
     @Override
     public void createTransaction(Order order, String action) {
         Transaction transaction = new Transaction(order.getTypeCrypto(), order.getAmountTraded(), order.getPrice(), action);
-        if(transaction != null){
-            saveTransaction(transaction);
-        }
+        saveTransaction(transaction);
     }
 
+    /**
+     * This method save the transaction in the user's transaction list.
+     * @param transaction transaction that will be saved
+     */
     @Override
     public void saveTransaction(Transaction transaction) {
-        String idTransaction = "B" + (getTotalTransactions() + 1);
-        transactions.put(idTransaction, transaction);
         user.getTransactions().add(transaction);
     }
 }

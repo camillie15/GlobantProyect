@@ -12,6 +12,9 @@ public class CheckWalletController {
         this.user = user;
     }
 
+    /**
+     * This method calls a view method that print the user's wallet (fiat money and cryptos).
+     */
     public void execute(){
         exchangeSystemView.viewWalletBalance(user.getWallet());
     }

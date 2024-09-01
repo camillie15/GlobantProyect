@@ -27,6 +27,11 @@ public class BuyOrderController {
         this.exchangeSystemService = exchangeSystemService;
     }
 
+    /**
+     * This method executes a series of processes, such as requesting data from the user for the type and amount of crypto
+     * and the maximum value to pay for that order, then compares whether the value to pay is in the wallet, and then calls
+     * methods that create the order, add it to the buy order book and process the order.
+     */
     public void execute(){
         String typeCrypto = exchangeSystemView.getTypeCryptoInput("Type the cryptocurrency you want to buy: ").toUpperCase();
         BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to buy (Use ',' for decimals): ");
@@ -41,7 +46,7 @@ public class BuyOrderController {
                 throw new InsufficientFiatMoney();
             }
         }catch (InsufficientFiatMoney e){
-            System.out.println("\u001B[31mInsufficient fiat money in your wallet, you place others buy orders\u001B[0m");
+            System.out.println("\u001B[31mInsufficient fiat money\u001B[0m");
         }catch (EmptyListException e){
             System.out.println("\u001B[34mNo sell orders registered, your order will be process later\u001B[0m");
         }

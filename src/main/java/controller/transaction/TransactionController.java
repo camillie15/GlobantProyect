@@ -12,6 +12,9 @@ public class TransactionController {
         this.user = user;
     }
 
+    /**
+     * This method calls a view method that print the user's transactions.
+     */
     public void execute(){
         exchangeSystemView.viewTransactionHistory(user.getTransactions());
     }

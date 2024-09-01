@@ -19,6 +19,11 @@ public class LoginController {
         this.userService = userService;
     }
 
+    /**
+     * This method calls a series of methods that request the user's email and password,
+     * validates if the user is registered and if the password is correct, once these data are validated,
+     * starts the system service with the user's data and displays the system menu.
+     */
     public void execute(){
         String email = loginView.getUserEmailInput();
         String password = loginView.getPasswordInput();

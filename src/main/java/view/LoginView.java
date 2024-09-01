@@ -16,6 +16,10 @@ public class LoginView {
         return scanner;
     }
 
+    /**
+     * This method print the menu to start in the system and asks the user to select an option.
+     * @return the option that the user selected
+     */
     public int getUserLoginChoice(){
         System.out.println("Welcome to the Crypto Exchange System");
         System.out.println("1. Register");
@@ -30,16 +34,28 @@ public class LoginView {
         }
     }
 
+    /**
+     * This method asks the user for his name
+     * @return user's name
+     */
     public String getUserNameInput(){
         System.out.print("Enter your name: ");
         return scanner.next();
     }
 
+    /**
+     * This method asks the user for his email
+     * @return user's email
+     */
     public String getUserEmailInput(){
         System.out.print("Enter your email: ");
         return scanner.next();
     }
 
+    /**
+     * This method asks the user for his password and verifies that the password must be 8 characters or more
+     * @return user's password
+     */
     public String getPasswordInput(){
         try {
             System.out.print("Enter your password: ");

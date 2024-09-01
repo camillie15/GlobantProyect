@@ -15,7 +15,10 @@ public class RootController {
         this.registerController = new RegisterController(loginView, userService);
         this.loginController = new LoginController(loginView, userService);
     }
-
+    /**
+     * This method calls a series of methods that request the option selected by the user and
+     * executes a method according to this option.
+     */
     public void run(){
         while (true){
             int userLoginChoice = loginView.getUserLoginChoice();

@@ -17,6 +17,10 @@ public class CryptoService {
         cryptos.put("ETH", new Crypto(TypeCrypto.ETHEREUM, BigDecimal.ZERO));
     }
 
+    /**
+     * This method returns a list of cryptos from the Map.
+     * @return list of cryptos
+     */
     public List<Crypto> getCryptos(){
         return new ArrayList<>(cryptos.values());
     }

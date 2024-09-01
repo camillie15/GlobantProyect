@@ -27,6 +27,12 @@ public class SellOrderController {
         this.sellOrdersService = SellOrdersService.getSellOrdersInstance();
         this.exchangeSystemService = exchangeSystemService;
     }
+
+    /**
+     * This method executes a series of processes, such as requesting data from the user for the type and amount of crypto
+     * and the minimum value to accept for that order, then compares whether the cryptos to sell is in the wallet, and
+     * then calls methods that create the order, add it to the sell order book and process the order.
+     */
     public void execute(){
         String typeCrypto = exchangeSystemView.getTypeCryptoInput("Type the cryptocurrency you want to sell: ").toUpperCase();
         BigDecimal amountCrypto = exchangeSystemView.getAmountCryptoInput("Type the amount of cryptocurrencies you want to sell (Use ',' for decimals): ");
@@ -41,7 +47,7 @@ public class SellOrderController {
                 throw new InsufficientCryptoException();
             }
         }catch (InsufficientCryptoException e){
-            System.out.println("\u001B[31mInsufficient cryptos for traded, you place others sell orders\u001B[0m");
+            System.out.println("\u001B[31mInsufficient cryptos\u001B[0m");
         }catch (EmptyListException e){
             System.out.println("\u001B[34mNo buy orders registered, your order will be process later\u001B[0m");
         }

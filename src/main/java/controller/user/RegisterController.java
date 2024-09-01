@@ -14,6 +14,10 @@ public class RegisterController {
         this.userService = userService;
     }
 
+    /**
+     * This method calls a series of methods that request the user's name, email and password
+     * and validates if the email is already registered, once this data is validated, the user is created.
+     */
     public void execute(){
         String nameUser = loginView.getUserNameInput();
         String email = loginView.getUserEmailInput();

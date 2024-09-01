@@ -1,6 +1,5 @@
 package controller.wallet;
 
-import model.exceptions.InvalidAmountDepositException;
 import service.wallet.WalletService;
 import view.ExchangeSystemView;
 
@@ -16,14 +15,14 @@ public class DepositController {
         this.walletService = walletService;
     }
 
+    /**
+     * This method calls a series of methods that request the amount to deposit and a method
+     * from the wallet service that process the deposit to the wallet.
+     */
     public void execute(){
         BigDecimal amount = exchangeSystemView.getAmountDepositInput();
-        try{
-            walletService.depositCash(amount);
-            System.out.printf("\u001B[32m\t>> Successful deposit <<\nActual fiat in your wallet: %s\n\u001B[0m",
-                    new DecimalFormat("#,#00.00").format(walletService.getWallet().getBalanceCash()));
-        } catch (InvalidAmountDepositException e){
-            System.out.println("\u001B[31m" + "Invalid amount. Amount must be greater than 0" + "\u001B[0m");
-        }
+        walletService.depositCash(amount);
+        System.out.printf("\u001B[32m\t>> Successful deposit <<\nActual fiat in your wallet: %s\n\u001B[0m",
+                new DecimalFormat("#,#00.00").format(walletService.getWallet().getBalanceCash()));
     }
 }

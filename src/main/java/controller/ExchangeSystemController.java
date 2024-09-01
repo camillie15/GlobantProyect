@@ -31,6 +31,10 @@ public class ExchangeSystemController {
         this.transactionController = new TransactionController(exchangeSystemView, user);
     }
 
+    /**
+     * This method calls a series of methods that request the option selected by the user and
+     * executes a method according to this option.
+     */
     public void run(){
         boolean login = true;
         while (login){
